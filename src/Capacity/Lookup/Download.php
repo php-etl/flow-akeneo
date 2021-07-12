@@ -40,7 +40,7 @@ final class Download implements Akeneo\Capacity\CapacityInterface
                 'The configuration option "file" should be defined.'
             );
         }
-        $builder->withFile(compileValue($this->interpreter, $config['file']));
+        $builder->withParameter(compileValue($this->interpreter, $config['file']));
 
         return $builder;
     }

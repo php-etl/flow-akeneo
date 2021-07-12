@@ -76,12 +76,26 @@ final class All implements Akeneo\Capacity\CapacityInterface
             $builder->withSearch($this->compileFilters(...$config['search']));
         }
 
-        if (in_array($config['type'], ['attributeOption'])
+        if (in_array($config['type'], ['attributeOption','familyVariant'])
             && array_key_exists('code', $config)
         ) {
-            $builder->withCode(compileValue($this->interpreter, $config['code']));
+            $builder->withParameter(compileValue($this->interpreter, $config['code']));
+            $builder->withParameterName($this->getParameterNameByConfig($config['type']));
         }
 
         return $builder;
+    }
+
+    private function getParameterNameByConfig(string $type): string
+    {
+        $mapping = [
+            'familyVariant' => 'familyCode',
+            'attributeOption' => 'attributeCode',
+            'referenceEntity' => 'referenceEntityCode',
+            'referenceEntityAttribute' => 'referenceEntityCode',
+            'referenceEntityRecord' => 'referenceEntityCode'
+        ];
+
+        return $mapping[$type];
     }
 }
